@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>主页</title>
+<!-- Bootstrap核心CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<!-- JQuery -->
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<!-- bootstrap的js -->
+<script type="text/javascript" src="/js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<!-- echarts的js -->
+<script type="text/javascript" src="/js/echarts.js"></script>
+</head>
+<body>
+	<!-- 标题 -->
+	<div th:include="fragment/index_fragment::index_header"></div>
+	<!-- 内容 -->
+	<div class="row">
+		<div class="col-lg-2"></div>
+		<div class="col-lg-8">
+			<!-- 目录 -->
+			<form action="/categorys" method="post">
+				<div class="input-group mb-3">
+					<input type="text" class="form-control" name="name"
+						placeholder="分类名">
+					<div class="input-group-append">
+						<button class="btn btn-outline-secondary" type="submit">添加分类</button>
+					</div>
+				</div>
+			</form>
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">目录名</th>
+						<th scope="col">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="category:${categoryList}">
+						<td th:text="${category.name}"></td>
+						<td><a th:href="'/categorys/'+${category.id}+'/is_using'"><button
+									type="button" th:if="${category.is_using}"
+									class="btn btn-danger">禁用</button>
+								<button type="button" class="btn btn-success"
+									th:if="!${category.is_using}">已禁用</button></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-lg-2"></div>
+	</div>
+</body>
+</html>

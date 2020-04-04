@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>主页</title>
+<!-- Bootstrap核心CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<!-- JQuery -->
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<!-- bootstrap的js -->
+<script type="text/javascript" src="/js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<!-- echarts的js -->
+<script type="text/javascript" src="/js/echarts.js"></script>
+</head>
+<body>
+	<!-- 标题 -->
+	<div th:include="fragment/index_fragment::index_header"></div>
+	<!-- 内容 -->
+	<div class="row">
+		<div class="col-lg-4"></div>
+		<div class="col-lg-4">
+			<table class="table">
+				<tr>
+					<td>头像</td>
+					<td><img th:src="'/image/'+${user.image}" width="50px"
+						height="50px" class="img-thumbnail" /></td>
+				</tr>
+				<tr>
+					<td>昵称</td>
+					<td th:text="${user.nickname}"></td>
+				</tr>
+				<tr>
+					<td>性别</td>
+					<td><span th:if="${user.gender}">男</span> <span
+						th:if="!${user.gender}">女</span></td>
+				</tr>
+				<tr>
+					<td>简介</td>
+					<td th:text="${user.profile}"></td>
+				</tr>
+				<tr>
+					<td>生日</td>
+					<td th:text="${user.birthday}"></td>
+				</tr>
+			</table>
+			<div th:if="${session.user}!=null">
+				<a href="/users/edit"><button type="button"
+						class="btn btn-primary" th:if="${session.user.id}==${user.id}">编辑</button>
+				</a> <a href="/admin"><button type="button" class="btn btn-primary"
+						th:if="${session.user.role}=='admin'">后台</button> </a>
+			</div>
+		</div>
+		<div class="col-lg-4"></div>
+	</div>
+</body>
+</html>

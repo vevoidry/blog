@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>主页</title>
+<!-- Bootstrap核心CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<!-- JQuery -->
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<!-- bootstrap的js -->
+<script type="text/javascript" src="/js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<!-- echarts的js -->
+<script type="text/javascript" src="/js/echarts.js"></script>
+</head>
+<body>
+	<!-- 标题 -->
+	<div th:include="fragment/index_fragment::index_header"></div>
+	<!-- 内容 -->
+	<div class="row">
+		<div class="col-lg-2"></div>
+		<div class="col-lg-8">
+			<!-- 帖子 -->
+			<div th:text="${article.title}" class=" font-weight-bold"></div>
+			<div th:text="${article.content}"></div>
+			<div th:text="${article.create_time}" class="text-muted"></div>
+			<!-- 回答 -->
+			<ul class="list-group">
+				<li th:each="commentUser:${map}" class="list-group-item">
+					<div>
+						<img th:src="'/image/'+${commentUser.value.image}" width="50px"
+							height="50px" class="img-thumbnail" /><a
+							th:text="${commentUser.value.nickname}" class="font-weight-bold"
+							th:href="'/users/'+${commentUser.value.id}"></a>
+					</div>
+					<div th:text="${commentUser.key.create_time}" class="text-muted"></div>
+					<div th:text="${commentUser.key.content}"></div>
+				</li>
+			</ul>
+			<!-- 回复区 -->
+			<form action="/comments" method="post">
+				<input type="text" class="form-control" name="article_id"
+					th:value="${article.id}" hidden>
+				<textarea class="form-control" name="content" rows="10"
+					placeholder="回复内容"></textarea>
+				<button type="submit" class="form-control btn btn-info">回复</button>
+			</form>
+		</div>
+		<div class="col-lg-2"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>主页</title>
+<!-- Bootstrap核心CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<!-- JQuery -->
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<!-- bootstrap的js -->
+<script type="text/javascript" src="/js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+<!-- echarts的js -->
+<script type="text/javascript" src="/js/echarts.js"></script>
+</head>
+<body>
+	<!-- 标题 -->
+	<div th:include="fragment/index_fragment::index_header"></div>
+	<!-- 内容 -->
+	<div class="row">
+		<div class="col-lg-4"></div>
+		<div class="col-lg-4">
+			<form action="/users/update" method="post"
+				enctype="multipart/form-data" id="edit_id">
+				<div>
+					<span>头像：</span>
+				</div>
+				<img th:src="'/image/'+${session.user.image}" width="100px"
+					height="100px" class="img-thumbnail" /><input type="file"
+					name="file_name" class="form-control" />
+				<div>
+					<span>昵称：</span>
+				</div>
+				<input type="text" class="form-control"
+					th:value="${session.user.nickname}" name="nickname" />
+				<div th:if="${session.user.gender}">
+					<span>性别：</span>男<input type="radio" name="gender" value="true"
+						checked="checked" />女<input type="radio" name="gender"
+						value="false" />
+				</div>
+				<div th:if="!${session.user.gender}">
+					<span>性别：</span>男<input type="radio" name="gender" value="true" />女<input
+						type="radio" name="gender" value="false" checked="checked" />
+				</div>
+				<div>
+					<span>简介：</span>
+				</div>
+				<input class="form-control" type="text"
+					th:value="${session.user.profile}" name="profile" />
+				<div>
+					<span>生日：</span><span th:text="${session.user.birthday}"></span>
+				</div>
+				<input type="date" name="birthday" class="form-control" />
+				<button class="btn btn-primary" type="button"
+					onclick="user_information_change()">修改</button>
+			</form>
+			<script type="text/javascript" th:inline="javascript">
+				var user_information_change = function() {
+					$.ajax({
+						url : "/users/update",
+						type : "POST",
+						cache : false,
+						data : new FormData($("#edit_id")[0]),
+						dataType : "JSON",
+						async : false,
+						contentType : false,
+						processData : false,
+						success : function(result) {
+							window.location.href = "/users/"+[[${session.user.id}]];
+						},
+						error : function(err) {
+							alert(err.responseJSON.message);
+						}
+					});
+				}
+			</script>
+		</div>
+		<div class="col-lg-4"></div>
+	</div>
+</body>
+</html>

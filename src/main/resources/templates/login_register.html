@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>登录注册页面</title>
+<!-- Bootstrap核心CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<!-- JQuery -->
+<script type="text/javascript" src="/js/jquery-3.4.1.min.js"></script>
+<!-- bootstrap的js -->
+<script type="text/javascript" src="/js/popper.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<!-- 标题 -->
+	<div th:include="fragment/index_fragment::index_header"></div>
+	<!-- 控制按钮 -->
+	<div class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<div class="btn-group d-flex justify-content-center" role="group"
+				aria-label="Basic example">
+				<button type="button" class="btn btn-secondary"
+					onclick="loginShift()">登录</button>
+				<button type="button" class="btn btn-secondary"
+					onclick="registerShift()">注册</button>
+			</div>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	<!-- 登录 -->
+	<div id="login" class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<form action="/authentication/authenticate" method="post">
+				<input type="text" class="form-control" name="username"
+					placeholder="账号"> <input type="password"
+					class="form-control" name="password" placeholder="密码">
+				<button type="submit" class="form-control btn btn-info">登录</button>
+			</form>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	<!-- 注册 -->
+	<div id="register" class="row">
+		<div class="col-md-4"></div>
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="register_username"
+				placeholder="账号 6-15位 由数字与大小写字母组成"><input type="password"
+				class="form-control" id="register_password"
+				placeholder="密码 6-15位 由数字与大小写字母组成">
+			<button type="button" class="form-control btn btn-info"
+				onclick="register()">注册</button>
+		</div>
+		<div class="col-md-4"></div>
+	</div>
+	<script type="text/javascript">
+		//切换登录
+		var loginShift = function() {
+			console.log(1);
+			$("#login").show();
+			$("#register").hide();
+		}
+		//切换注册
+		var registerShift = function() {
+			console.log(2);
+			$("#login").hide();
+			$("#register").show();
+		}
+		//进行注册
+		var register = function() {
+			//获取账号密码并去除两侧空格
+			var username = $("#register_username").val().trim();
+			var password = $("#register_password").val().trim();
+			//进行注册
+			$.ajax({
+				url : "/users",
+				type : "POST",
+				data : {
+					"username" : username,
+					"password" : password
+				},
+				dataType : "JSON",
+				async : false,
+				success : function(result) {
+					window.location.href = "/";
+				},
+				error : function(err) {
+					alert(err.responseJSON.message);
+				}
+			});
+		}
+		loginShift();
+	</script>
+</body>
+</html>

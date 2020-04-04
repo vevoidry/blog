@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8" />
+<body>
+	<!-- 标题 -->
+	<div th:fragment="index_header">
+		<h1 class="text-center">
+			<a href="/">论坛</a>
+		</h1>
+	</div>
+	<!-- 文章与分页显示 -->
+	<div th:fragment="page">
+		<div id="article_div"></div>
+		<nav aria-label="Page navigation example">
+			<ul class="pagination">
+				<li th:each="page:${pageList}" class="page-item"><a
+					class="page-link"
+					th:onclick="'updateArticle_div('+${category_id}+','+${page}+')'"
+					th:text="${page}"></a></li>
+			</ul>
+		</nav>
+		<script type="text/javascript" th:inline="javascript">
+			var updateArticle_div = function(category_id, page) {
+				$("#article_div").load(
+						"/categorys/" + category_id + "/article/" + page);
+			}
+			updateArticle_div([[${category_id}]],1);
+		</script>
+	</div>
+	<!-- 文章显示 -->
+	<div th:fragment="article">
+		<ul class="list-group">
+			<li th:each="article:${articleList}" class="list-group-item"><a
+				th:text="${article.title}" th:href="'/articles/'+${article.id}"></a></li>
+		</ul>
+	</div>
+</body>
+</html>
